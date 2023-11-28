@@ -68,7 +68,7 @@ app.post("/send", (req, res) => {
 });
 
 // Serve static files for the React app
-app.use(express.static(path.resolve(__dirname, "../dist")));
+app.use(express.static(path.resolve(__dirname, "../client/dist")));
 
 // Handle GET requests to /send route
 app.get("/send", (req, res) => {
@@ -77,7 +77,7 @@ app.get("/send", (req, res) => {
 
 // All other GET requests not handled before will return the React app
 app.get("*", (req, res) => {
-  const indexPath = path.resolve(__dirname, "../dist", "index.html");
+  const indexPath = path.resolve(__dirname, "../client/dist", "index.html");
   console.log("Serving index.html from:", indexPath);
   res.sendFile(indexPath);
 });
