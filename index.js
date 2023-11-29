@@ -70,7 +70,7 @@ app.post("/send", (req, res) => {
 // Serve static files for the React app
 const staticFilesPath = path.resolve(__dirname, "../client/dist");
 app.use(express.static(staticFilesPath));
-console.log("Serving static files from:", staticFilesPath);
+console.log("Render logs - Serving static files from:", staticFilesPath);
 
 // Handle GET requests to /send route
 app.get("/send", (req, res) => {
@@ -79,12 +79,18 @@ app.get("/send", (req, res) => {
 
 // All other GET requests not handled before will return the React app
 const indexPath = path.resolve(__dirname, "../client/dist", "index.html");
-console.log("Serving index.html from:", indexPath);
+console.log("Render logs - Serving index.html from:", indexPath);
 app.get("*", (req, res) => {
-  res.sendFile(indexPath);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error("Error sending index.html:", err);
+      res.status(500).send("Error sending index.html");
+    }
+  });
 });
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
+  console.log("Render logs - Server running from:", __dirname);
 });
